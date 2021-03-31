@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navItem_home"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/navItem_doDonts"
+        android:title="Do's and Dont's"/>
+
+    <item
+        android:id="@+id/navItem_aboutUs"
+        android:title="About us"/>
+
+    <item
+        android:id="@+id/navItem_policy"
+        android:title="Terms of Usage"/>
+
+
+</menu>

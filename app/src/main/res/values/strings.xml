@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">BAANAPOD - Assam Flood Rescue</string>
+    <string name="nav_drawer_opened">Navigation Drawer Opened</string>
+    <string name="nav_drawer_closed">Navigation Drawer Closed</string>
+
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/do_donts"
+        android:title="Do's and Dont's"
+        android:icon="@drawable/do_donts_foreground"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/about_us"
+        android:title="About us"
+        android:icon="@drawable/info_foreground"
+        app:showAsAction="ifRoom"/>
+
+</menu>
