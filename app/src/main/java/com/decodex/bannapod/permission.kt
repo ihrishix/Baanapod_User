@@ -170,35 +170,20 @@ class permission : AppCompatActivity() {
 
     //New Location Listner (On Location result)
     private val locationCallback = object : LocationCallback(){
-
         override fun onLocationResult(locationResult: LocationResult) {
-            var lastLocation: Location = locationResult.lastLocation
 
+            var lastLocation: Location = locationResult.lastLocation
             user_latitude = lastLocation.latitude.toString()
             user_longitude = lastLocation.longitude.toString()
             Log.d("Permission", "New User Location Fetched(long, lat) : $user_longitude $user_latitude ")
 
             goto_Main_Activity()
-
         }
-    }
-
-
-    //Takes longitude, latitude and returns Cityname
-    private fun getCityName(lat: Double,long: Double):String{
-
-        var cityName:String = ""
-        var geoCoder = Geocoder(this, Locale.getDefault())
-        var Adress = geoCoder.getFromLocation(lat,long,3)
-
-        cityName = Adress.get(0).locality
-        return cityName
     }
 
     //Closes this activity, Opens Main Activity
     private fun goto_Main_Activity(){
         val MainActivity_intent = Intent(this@permission, MainActivity::class.java)
-
         MainActivity_intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
         startActivity(MainActivity_intent)
         finish()

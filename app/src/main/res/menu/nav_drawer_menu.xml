@@ -13,9 +13,7 @@
         android:id="@+id/navItem_aboutUs"
         android:title="About us"/>
 
-    <item
-        android:id="@+id/navItem_policy"
-        android:title="Terms of Usage"/>
+
 
 
 </menu>

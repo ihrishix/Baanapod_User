@@ -2,6 +2,7 @@ package com.decodex.bannapod
 
 import java.io.Serializable
 
+
 data class user(
     val firstname:String = "",
     val lastname:String = "",

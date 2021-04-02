@@ -27,11 +27,10 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-val TAG = "Main Activity"       //
+val TAG = "Main Activity"
 
 var user_longitude = "NOT AVAILABLE"        //User Lat, Long
 var user_latitude = "NOT AVAILABLE"
-
 val auth = FirebaseAuth.getInstance()
 val phone_no = auth.currentUser.phoneNumber
 
@@ -42,26 +41,11 @@ val phone_no = auth.currentUser.phoneNumber
 class MainActivity : AppCompatActivity() {
 
     lateinit var navBar_toggle: ActionBarDrawerToggle
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_bar_menu, menu)
-        return true
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (navBar_toggle.onOptionsItemSelected(item)) {
             return true
-        }
-
-        when (item.itemId) {
-            R.id.do_donts -> {
-                val item_intent = Intent(this, do_donts::class.java)
-                startActivity(item_intent)
-            }
-            R.id.about_us -> {
-                val item_intent = Intent(this, about_us::class.java)
-                startActivity(item_intent)
-            }
         }
         return true
     }
@@ -71,33 +55,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //debug
+        //For slidable menu
 
-        CoroutineScope(Dispatchers.IO).launch {
-            var req = Firebase.firestore.collection("requests")
+        navBar_toggle = ActionBarDrawerToggle(this,
+            Main_DrawerLayout, R.string.nav_drawer_opened, R.string.nav_drawer_closed)
 
-
-            var snap = req.get().await()
-            for (d in snap.documents) {
-
-                Log.d("hrishi", "siz ${d.id}")
-
-            }
-        }
-        //debug
-
-        navBar_toggle = ActionBarDrawerToggle(
-            this,
-            Main_DrawerLayout,
-            R.string.nav_drawer_opened,
-            R.string.nav_drawer_closed
-        )
         Main_DrawerLayout.addDrawerListener(navBar_toggle)
-
         navBar_toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) //For backbutton after opening the drawer
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) //for backbutton after opening the drawer
-
+        //Menu Items
         Nav_view.setNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.navItem_home -> {
@@ -106,11 +73,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.navItem_doDonts -> {
                     val inn = Intent(this, do_donts::class.java)
-                    inn.flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     startActivity(inn)
-
                 }
-                R.id.navItem_policy -> startActivity(Intent(this, MainActivity::class.java))
+
+
                 R.id.navItem_aboutUs -> startActivity(Intent(this, about_us::class.java))
 
             }
@@ -119,18 +85,16 @@ class MainActivity : AppCompatActivity() {
 
         val time = SimpleDateFormat("dd/MM/yyyy hh:mm:ss")
 
-
+        //todo To be delted. Temp code
         main_userLocation.text = "Location : ${getCityName(
             user_latitude.toDouble(),
             user_longitude.toDouble()
         )},  $user_latitude $user_longitude"
 
-        getUserdata()
-
-
+        getUserdata()       //Gets user data
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
-
+        //Sos button
         btn_sendSos.setOnClickListener {
 
             val request = Notification_data(
@@ -141,7 +105,6 @@ class MainActivity : AppCompatActivity() {
             )
 
             save_request(request)
-
 
             Push_notification(
                 Notification_data(
@@ -159,42 +122,44 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //Sends notification over FCM
     private fun send_notification(notification: Push_notification) =
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = Retrofit_instance.api.post_notification(notification)
+
                 if (response.isSuccessful) {
+
                     Log.d(TAG, "Response Successful : ${Gson().toJson(response)}")
                 } else {
-                    Log.d(TAG, response.errorBody().toString())
+
+                    Log.e(TAG, " Error while sending notification : ${response.errorBody().toString()}")
                 }
             } catch (e: Exception) {
-                Log.e(TAG, e.toString())
 
+                Log.e(TAG, " Error while sending notification : ${e.message.toString()}")
             }
-
         }
 
+    //Gets user data, displays it to main screen. If user got deleted, Logout.
     private fun getUserdata() {
 
         val user_collection = Firebase.firestore.collection("users")
-
         val doc = user_collection.document(phone_no)
 
         doc.get().addOnSuccessListener {
 
             if (it.data == null) {
+
                 auth.signOut()
                 val auth_intent = Intent(this, Authentication::class.java)
                 auth_intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
                 startActivity(auth_intent)
-                //finish()
-
             } else {
+
                 val user = it.toObject<user>()
                 val name = "${user!!.firstname} ${user.lastname}"
                 main_UserName.text = name
-
             }
         }
     }
@@ -215,15 +180,22 @@ class MainActivity : AppCompatActivity() {
             
             val requests_collection = Firebase.firestore.collection("requests")
             val time = SimpleDateFormat("dd.MM hh:mm:ss")
-            requests_collection.document("$phone_no ${time.format(Date())}").set(request).addOnCompleteListener {
+
+            requests_collection.document("$phone_no ${time.format(Date())}")
+                .set(request)
+                .addOnCompleteListener {
+
                 Toast.makeText(this@MainActivity, "Request Sent", Toast.LENGTH_LONG).show()
+
             }.addOnFailureListener {
-                Log.e(TAG, "Request Save Failed : ${it.message}")
+
+                Log.e(TAG, "Request Sending Failed : ${it.message}")
                 Toast.makeText(this@MainActivity, "Something Went Wrong. ${it.message}", Toast.LENGTH_LONG).show()
             }.await()
 
         } catch (e: Exception) {
-            Log.e(TAG, "Error : ${e.message}")
+            Log.e(TAG, "Error while sending request : ${e.message}")
+
             withContext(Dispatchers.Main) {
                 Toast.makeText(this@MainActivity, e.message, Toast.LENGTH_LONG).show()
             }
