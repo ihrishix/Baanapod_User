@@ -78,6 +78,10 @@ class MainActivity : AppCompatActivity() {
                     startActivity(inn)
                 }
 
+                R.id.termsncond -> {
+                    val inn = Intent(this, termsncondition::class.java)
+                    startActivity(inn)
+                }
 
                 R.id.navItem_aboutUs -> startActivity(Intent(this, about_us::class.java))
 

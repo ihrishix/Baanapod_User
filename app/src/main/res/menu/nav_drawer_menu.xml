@@ -10,8 +10,13 @@
         android:title="Do's and Dont's"/>
 
     <item
+        android:id="@+id/termsncond"
+        android:title="How we handle data ?"/>
+
+    <item
         android:id="@+id/navItem_aboutUs"
         android:title="About us"/>
+
 
 
 
