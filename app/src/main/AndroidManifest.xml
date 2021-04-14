@@ -14,24 +14,26 @@
         android:roundIcon="@drawable/bannapod_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sos1">
-        <activity android:name="com.decodex.bannapod.about_us"
-            android:parentActivityName="com.decodex.bannapod.MainActivity">
-
-        </activity>
-        <activity android:name="com.decodex.bannapod.do_donts"
-            />
-        <activity android:name="com.decodex.bannapod.SignUp" />
-        <activity android:name="com.decodex.bannapod.Authentication">
+        <activity android:name=".termsncondition"></activity>
+        <activity android:name=".Error" />
+        <activity android:name=".launch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.decodex.bannapod.permission" />
+        <activity
+            android:name=".about_us"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".do_donts"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".SignUp" />
+        <activity android:name=".permission" />
 
         <service
-            android:name="com.decodex.bannapod.Firebase_Service"
+            android:name=".Firebase_Service"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -39,7 +41,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name="com.decodex.bannapod.MainActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

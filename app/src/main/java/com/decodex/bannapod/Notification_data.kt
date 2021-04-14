@@ -8,6 +8,8 @@ data class Notification_data(
     val latitude:String = "",
     val time:String = "",
     val name : String = "",
-    val city : String = ""
+    val city : String = "",
+    val timee :String = "",
+    val datee :String = ""
 
 )

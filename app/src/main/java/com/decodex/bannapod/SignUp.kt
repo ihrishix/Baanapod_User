@@ -3,6 +3,7 @@ package com.decodex.bannapod
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -21,16 +22,27 @@ class SignUp : AppCompatActivity() {
         val getintent = intent
         val contact = intent.getStringExtra("contact")
 
-        //Todo check if text view are empty and put dropdown menu for age
+
 
         btn_signup.setOnClickListener {
             val firstname = signup_firstname.text.toString()
             val lastname = signup_lastname.text.toString()
             val age = signup_age.text.toString()
 
-            val user = user(firstname, lastname, age.toInt(), contact.toString())
+            if(firstname.isEmpty()){
+                Toast.makeText(this, "FirstName cannot be Empty", Toast.LENGTH_SHORT).show()
+            }
+            if(lastname.isEmpty()){
+                Toast.makeText(this, "LastName cannot be Empty", Toast.LENGTH_SHORT).show()
+            }
+            if(age.isEmpty() || age.toInt() < 1){
+                Toast.makeText(this, "Invalid Age", Toast.LENGTH_SHORT).show()
+            }
 
-            saveUser(user, contact!!)
+            if(!(firstname.isEmpty() || lastname.isEmpty() || age.isEmpty() || age.toInt() < 0)){
+                val user = user(firstname, lastname, age.toInt(), contact.toString())
+                saveUser(user, contact!!)
+            }
 
 
         }
@@ -40,22 +52,34 @@ class SignUp : AppCompatActivity() {
     private fun saveUser(user: user, contact:String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val user_collection = Firebase.firestore.collection("users")
-            user_collection.document(contact).set(user).await()
+            user_collection.document(contact).set(user).addOnSuccessListener {
 
-            withContext(Dispatchers.Main){
-                Toast.makeText(this@SignUp, "Data Saved", Toast.LENGTH_LONG).show()
+                    val launch_intent = Intent(this@SignUp, launch::class.java)
+                    launch_intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                    startActivity(launch_intent)
+                    finish()
+            }.await()
 
-                //Goto Permission activity with data
-                val permission_intent = Intent(this@SignUp, permission::class.java)
-                permission_intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
-                startActivity(permission_intent)
-                finish()
-            }
+
 
         }catch (e:Exception){
-            withContext(Dispatchers.Main){
-                Toast.makeText(this@SignUp, e.message, Toast.LENGTH_LONG).show()
-            }
+            create_alert_dialogue("${e.message}")
+            Log.e("Sign Up", "Error while saving new user data : ${e.message}")
         }
+    }
+
+    fun create_alert_dialogue(message:String = ""){
+
+        val error_dialogue = android.app.AlertDialog.Builder(this)
+            .setTitle("Error")
+            .setMessage(message)        //Set icon method available
+            .setPositiveButton("Retry") { _ ,_ ->
+                val launch_intent = Intent(this, launch::class.java)
+                launch_intent.flags = Intent.FLAG_ACTIVITY_NO_HISTORY
+                startActivity(launch_intent)
+                finish()
+            }.setCancelable(false).create()
+
+        error_dialogue.show()
     }
 }
