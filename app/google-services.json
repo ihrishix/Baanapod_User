@@ -7,70 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:848454357486:android:3859118452d5db29857eff",
+        "mobilesdk_app_id": "1:848454357486:android:ed65262394e71267857eff",
         "android_client_info": {
-          "package_name": "com.example.sos"
+          "package_name": "com.decodex.bannapod"
         }
       },
       "oauth_client": [
         {
-          "client_id": "848454357486-c05sic06a4ef7glcdf28dguqjf2v0hs0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBBpEwbc5lXQnf50TIcm0X22W1kKyNqYEg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "848454357486-c05sic06a4ef7glcdf28dguqjf2v0hs0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:848454357486:android:b316defd3e8e3788857eff",
-        "android_client_info": {
-          "package_name": "com.example.sos1"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "848454357486-c05sic06a4ef7glcdf28dguqjf2v0hs0.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBBpEwbc5lXQnf50TIcm0X22W1kKyNqYEg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "848454357486-c05sic06a4ef7glcdf28dguqjf2v0hs0.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:848454357486:android:33e9df07a8b0eb1a857eff",
-        "android_client_info": {
-          "package_name": "com.example.sosadmin"
-        }
-      },
-      "oauth_client": [
+          "client_id": "848454357486-5j0u1646vmmsbkg9vfo2tqm095difces.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.decodex.bannapod",
+            "certificate_hash": "83a4facee2b731663d357b7614fe4219322ed496"
+          }
+        },
         {
           "client_id": "848454357486-c05sic06a4ef7glcdf28dguqjf2v0hs0.apps.googleusercontent.com",
           "client_type": 3

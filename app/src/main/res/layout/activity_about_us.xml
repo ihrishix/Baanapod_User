@@ -153,7 +153,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:fontFamily="sans-serif-condensed-light"
-        android:text="decodex_support@gmail.com"
+        android:text="decodex.sup@gmail.com"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"

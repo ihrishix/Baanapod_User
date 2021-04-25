@@ -155,7 +155,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif-condensed-light"
-        android:text="decodex_support@gmail.com"
+        android:text="decodex.sup@gmail.com"
         android:textColor="@color/white"
         android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"

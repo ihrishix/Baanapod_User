@@ -1,6 +1,8 @@
 package com.decodex.bannapod
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import com.ncorti.slidetoact.SlideToActView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,31 +39,30 @@ var user_latitude = "NOT AVAILABLE"
 val auth = FirebaseAuth.getInstance()
 val phone_no = auth.currentUser.phoneNumber
 
-//todo support all screen sizes
-
-
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var navBar_toggle: ActionBarDrawerToggle
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         if (navBar_toggle.onOptionsItemSelected(item)) {
             return true
         }
         return true
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        supportActionBar!!.title = "Baanapod"
+        supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.rgb(0,185,226)))
         //For slidable menu
 
         navBar_toggle = ActionBarDrawerToggle(this,
             Main_DrawerLayout, R.string.nav_drawer_opened, R.string.nav_drawer_closed)
+
+
+
 
         Main_DrawerLayout.addDrawerListener(navBar_toggle)
         navBar_toggle.syncState()
@@ -94,6 +96,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(inn)
         }
 
+        val slide : SlideToActView = findViewById(R.id.btn_sendSos)
+
+        //Sos button
+        slide.onSlideCompleteListener = object : SlideToActView.OnSlideCompleteListener{
+            override fun onSlideComplete(view: SlideToActView) {
+                create_confirm_dialogue()
+            }
+
+        }
 
 
         main_userLocationcity.text = "${getCityName(
@@ -106,11 +117,7 @@ class MainActivity : AppCompatActivity() {
         getUserdata()       //Gets user data
         FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
 
-        //Sos button
-        btn_sendSos.setOnClickListener {
 
-            create_confirm_dialogue()
-        }
 
     }
 
@@ -122,15 +129,10 @@ class MainActivity : AppCompatActivity() {
         val doc = user_collection.document(phone_no)
         var last_time = ""
 
-        Log.d("afd", "ddd")
-
         doc.get().addOnSuccessListener {
 
             val user = it.toObject<user>()
             last_time = user!!.last_request_time
-            Log.d("afd", "fff")
-
-
 
             val last_req = check_last_request(time.format(Date()), last_time)
 
@@ -143,25 +145,25 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     .setCancelable(false).create()
+                btn_sendSos.resetSlider()
+                Log.e("bugbug", "yuppp")
 
                 error_dialogue.show()
 
 
             }else{
-
-                Log.d("lala", "reached")
                 val timee = SimpleDateFormat("HH:mm:ss")
                 val datee = SimpleDateFormat("dd/MM/yyyy")
 
                 val request = Notification_data(
                     phone_no.toString(), main_message.text.toString(), user_longitude,
-                    user_latitude, time.format(Date()), main_UserName.text.toString(), getCityName(
-                        user_latitude.toDouble(), user_longitude.toDouble()
-                    ), timee.format(Date()), datee.format(Date())
+                    user_latitude, time.format(Date()), main_UserName.text.toString(), main_userLocationcity.text.toString()
+                    , timee.format(Date()), datee.format(Date())
                 )
 
 
                 save_request(request, time.format(Date()))
+                btn_sendSos.resetSlider()
 
                 Push_notification(
                     Notification_data(
@@ -247,7 +249,9 @@ class MainActivity : AppCompatActivity() {
 
     fun check_last_request(current_datetime:String, last_datetime:String) : Int{
 
-
+        if(last_datetime == "" || last_datetime == null){
+            return  -1
+        }
 
         val current_datetime_arr = current_datetime.split(" ")
         val current_date = current_datetime_arr[0]
@@ -290,11 +294,9 @@ class MainActivity : AppCompatActivity() {
     private fun save_request(request: Notification_data, request_time: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
 
-            val date = SimpleDateFormat("dd.MM.yyyy")
-
             val requests_collection = Firebase.firestore.collection("requests")
             val user_collection = Firebase.firestore.collection("users")
-            val time = SimpleDateFormat("HH:mm:ss")
+            val time = SimpleDateFormat("HH:mm:ss dd.mm")
 
             requests_collection.document("${time.format(Date())} $phone_no")
                 .set(request)

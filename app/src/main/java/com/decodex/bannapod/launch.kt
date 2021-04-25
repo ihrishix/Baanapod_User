@@ -32,6 +32,11 @@ class launch : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launch)
 
+        val actiombar = supportActionBar
+
+        actiombar!!.hide()
+
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
         checklogin()

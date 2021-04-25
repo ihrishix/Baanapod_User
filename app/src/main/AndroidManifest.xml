@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/bannapod_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sos1">
-        <activity android:name=".termsncondition"></activity>
+        <activity android:name=".termsncondition"
+            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".Error" />
         <activity android:name=".launch">
             <intent-filter>
@@ -30,7 +31,6 @@
             android:name=".do_donts"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".SignUp" />
-        <activity android:name=".permission" />
 
         <service
             android:name=".Firebase_Service"
