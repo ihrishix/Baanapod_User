@@ -5,7 +5,7 @@ package com.decodex.bannapod
 class constants {
     companion object{
         const val BASE_URL = "https://fcm.googleapis.com"
-        const val SERVER_KEY = "AAAAxYvSEe4:APA91bEaSXu_KXC_B1-9eBNLR1cDexSl7WO1qHK4WGGnoYZNBhNpTLUw0oE7BfPHbYCLy6vXSkeBgAu9D7ntDqmIEfMAKlPS3dGTPJScrhqI5I9nHov5WjJhGVbHeJXaSBXwv51KAoOi"
+        const val SERVER_KEY = $paste api key here
         const val CONTENT_TYPE = "application/json"
 
         //Request Codes
